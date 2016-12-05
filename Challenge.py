@@ -5,6 +5,8 @@ import math
 import array
 import itertools
 import operator
+import collections
+from ete3 import Tree
 
 def reading():
     inputs = [];
@@ -136,74 +138,82 @@ def getGratestIG(list):
         return max(list)
 
 # Sort the data set given the IG
-def SortIG(list,index):
-    for x in list:
-        value = sorted(list,key=operator.itemgetter(index));
-    return value
+# def SortIG(list,index):
+#     for x in list:
+#         value = sorted(list,key=operator.itemgetter(index));
+#     return value
 
 # Split the dataSet given the IG
 def SplitIG(list,value,index):
-    data = SortIG(list,index)
     splittables = []
-
-    for x in data:
+    for x in list:
         if x[index] == value:
             splittables.append(x)
     return splittables
 
-def SplitIG_1(list,values,index):
-    dataSet = []
-    for x in values:
-        sig = SplitIG(list,x,index)
-        dataSet.append(sig)
-    return dataSet
-
-def SplitIG_without_index(list,value,index):
+def SplitIG_without_index(list,index):
     data = []
     for x in list:
         for y in x:
-            if  y[index] == value:
-                y.pop(index)
-                data.append(y)
-    print data
+            y.pop(index)
+            data.append(y)
     return data
 
+def checkEquals(list):
+   return len(set(list)) <= 1
 
-
-def checkEquals(iterator):
-   return len(set(iterator)) <= 1
-
-def id3(list,total):
+def id3(list,total,indexI):
     total_horizontal = getTotal_Column(list)
     total_vertical = getTotal(list)
     values = []
+    valuesColumn = []
     ig = 0
-    split = 0
-    DataSet = []
-    Data = []
+    index = 0
+    sortSplit = []
+    sortSplitIndex = []
+    sortData = []
+    sortDataIndex = []
     newDataSet = []
+
+    tree = lambda: collections.defaultdict(tree)
+    root = Tree()
 
     for x in xrange(0,total_horizontal-1):
         ig = IG(list,total_vertical,x,-1)
         values.append(ig)
+    
+    if values:
+        if not checkEquals(values):
+            print values
+            ggi = getGratestIG(values)
+            for i,x in enumerate(values):
+                if x == ggi:
+                    index = i
 
-    ggi = getGratestIG(values)
-    for i,x in enumerate(values):
-        if x == ggi:
-            split = i
+            valuesColumn = getDifferents(list,index)
+            for x in valuesColumn:
+                sortSplit = SplitIG(list,x,index)
+                sortData.append(sortSplit)
+            
+            sortDataIndex = SplitIG_without_index(sortData,index)
+            print index
 
-    values = getDifferents(list,split)
-    DataSet = SplitIG_1(list,values,split)
+            if index > indexI:
+                indexI=index+1
+            else:
+                indexI = index
 
-    for x in values:
-        sig_i = SplitIG_without_index(DataSet,x,split)
-        newDataSet.append(sig_i)
+            print "indextI", indexI
+            root.add_child(name=indexI)
+            for x in sortData:
+                print x
+                total = getTotal(x)
+                id3(x,total,indexI)
 
 def main():
     input_data = reading()
     t = getTotal(input_data)
-    H(input_data,t,-1)
-    id3(input_data,t)
+    id3(input_data,t,42)
 
 
  
