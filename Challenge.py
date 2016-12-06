@@ -26,6 +26,17 @@ def reading():
         inputs.append(result);
     return inputs
 
+def concatenateList(list1, list2):
+    new_list=[]
+ 
+    for i in range(0,len(list1)):
+        new_list.append(list1[i].rstrip('\n').rstrip('\''))
+ 
+    for i in range(0,len(list2)):
+        new_list.append(list2[i])
+ 
+    return new_list
+
 # Get the probability of one value in a specific column
 def P_Column(count,total):
     return float(count)/float(total);
@@ -64,7 +75,7 @@ def getAttributes_Column(data):
 # Execution of the id3 algorithm and creating the desicion tree
 def ID3(data,root):
     best_IG=0.0
-    best_criteria=None
+    best_value=None
     best_datasets=None
     column_values={}
     
@@ -90,7 +101,7 @@ def ID3(data,root):
             # Get the greates IG of all the data set
             if IG>best_IG and len(dataset1)>0 and len(dataset2)>0:
                 best_IG = IG
-                best_criteria = (column_index,value)
+                best_value = (column_index,value)
                 best_datasets = (dataset1,dataset2)
     
     # Check if the IG can be splited; if best_IG > 0 the dataset can continue to be splited in other case it stoped becouse it is pure
@@ -101,10 +112,10 @@ def ID3(data,root):
         accepted=ID3(best_datasets[0],A)
         not_accepted=ID3(best_datasets[1],A)
         # return a node with the values in the actual iteration
-        return node(col=best_criteria[0],value=best_criteria[1],accepted=accepted,rejected=not_accepted)
+        return node(col=best_value[0],value=best_value[1],accepted=accepted,rejected=not_accepted)
     else:
         # returns result values of the leafs
-        return node(results=getEquals(data))
+        return node(results=getEquals(data).keys())
 
 # Classify the new information
 def Classifier(data,desiciontree):
@@ -122,18 +133,24 @@ def Classifier(data,desiciontree):
 
 def main():
     input_data = reading()
+    verify_data = []
     new_data = []
     root = PhyloTree()
     tree = ID3(input_data,root)
     print root
-    # file = open("verifyData.txt", "r+")
+
     with open("verifyData.txt") as f:
         for line in f:
             result = line.split(',');
-            new_data.append(result)
+            verify_data.append(result)
 
-    for data in new_data:
-        print Classifier(data,tree)
-
+    for data in verify_data:
+        print concatenateList(data,Classifier(data,tree))
+        # new_data.append(concatenateList(data,Classifier(data,tree)))
+    
+    # file = open("verifyData.txt", "w")
+    # for data in new_data:
+    #     print>>file, data
+    # file.close
 if __name__ == "__main__":
     main()
