@@ -16,6 +16,6 @@ Then run the program with:
 
 -If you want to classify a certain dataset add it to the file verifiyData.txt with the necessary format to make a proper classification.
 
--The dataset was founded in [UCI]https://archive.ics.uci.edu/ml/datasets/Connect-4
+-The dataset was founded in [UCI](https://archive.ics.uci.edu/ml/datasets/Connect-4)
 
 -The dataest especification it is in the file Attributes Information
