@@ -10,7 +10,7 @@ In your terminal enter in the directory where it is the archive Challeng.py
 
 Then run the program with:
 
--User$ python Challenge.py < python Challenge.py < DataSets/input_02_connect-4.data
+-User$ python Challenge.py < DataSets/input_02_connect-4.data
 
 -If you want to modify the dataset enter to the input_02_connect-4.data and add or delete the line of the data set of yout chose
 
@@ -21,16 +21,16 @@ Then run the program with:
 -Attribute Information: (x=player x has taken, o=player o has taken, b=blank)
    
    The board is numbered like  
-6 .  .  .  .  .  .  .
-5 .  .  .  .  .  .  .
-4 .  .  .  .  .  .  .
-3 .  .  .  .  .  .  .
-2 .  .  .  .  .  .  .
-1 .  .  .  .  .  .  .
-  a  b  c  d  e  f  g
+-6 .  .  .  .  .  .  .
+-5 .  .  .  .  .  .  .
+-4 .  .  .  .  .  .  .
+-3 .  .  .  .  .  .  .
+-2 .  .  .  .  .  .  .
+-1 .  .  .  .  .  .  .
+-  a  b  c  d  e  f  g
 
 
-Variables from 1 to 43
+-Variables from 1 to 43
     1. a1: {x,o,b}
     2. a2: {x,o,b}
     3. a3: {x,o,b}
